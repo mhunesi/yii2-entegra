@@ -31,7 +31,6 @@ Once the extension is installed, simply use it in your code by  :
 <?php
     /** @var $entegra Entegra */
     $entegra = Yii::$app->entegra;
-   
     
     $response = $entegra->productService()->all();
  ?>```
