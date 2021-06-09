@@ -1,0 +1,190 @@
+<?php
+
+namespace mhunesi\entegra;
+
+use mhunesi\entegra\services\ProductService;
+use Yii;
+use yii\helpers\Json;
+use GuzzleHttp\Client;
+use yii\base\Component;
+use yii\base\ErrorException;
+use yii\helpers\ArrayHelper;
+use GuzzleHttp\Psr7\Message;
+use GuzzleHttp\Exception\RequestException;
+
+/**
+ * This is just an example.
+ */
+class Entegra extends Component
+{
+    /**
+     * @var string
+     */
+    public $url = "https://api.entegrabilisim.com";
+
+    /**
+     * @var string
+     */
+    public $email = 'apitest@entegrabilisim.com';
+
+    /**
+     * @var string
+     */
+    public $password = 'apitest';
+
+    /**
+     * @var string
+     */
+    private $access_token;
+
+    /**
+     * @var string
+     */
+    private $refresh_token;
+
+    /**
+     * @var Client|array
+     */
+    public $client;
+
+    /**
+     * @var string
+     */
+    public $cache = 'cache';
+
+    /**
+     * @throws ErrorException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\InvalidArgumentException
+     */
+    public function init()
+    {
+        $this->initClient();
+        $this->authenticate();
+    }
+
+    public function productService()
+    {
+        return new ProductService([
+           'client' => $this->client
+        ]);
+    }
+
+    /**
+     * @param $method
+     * @param string $uri
+     * @param array $options
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function request($method, $uri = '', array $options = [])
+    {
+        try {
+            $response = $this->client->request($method, $uri, $options);
+        } catch (RequestException $e) {
+            $request = Message::toString($e->getRequest());
+            $response = $e->getResponse();
+            if (method_exists($e, 'getResponse') && $e->getResponse()->getStatusCode() === 500) {
+                Yii::error('Api exception: ' . $e->getMessage() . " Request: " . $request, __METHOD__);
+            }
+        }
+        return $response;
+    }
+
+    /**
+     * Authorize Method
+     * @return bool
+     * @throws ErrorException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \GuzzleHttp\Exception\InvalidArgumentException
+     */
+    private function authenticate()
+    {
+        if (!$this->access_token) {
+            $response = $this->request('POST', '/api/user/token/obtain/', [
+                'body' => Json::encode([
+                    'email' => $this->email,
+                    'password' => $this->password,
+                ])
+            ]);
+
+            try {
+                $body = Json::decode($response->getBody());
+            } catch (\Exception $e) {
+                Yii::error($e->getMessage(), __METHOD__);
+                $responseString = Message::toString($response);
+                throw new ErrorException("JSON Error: {$e->getMessage()} Response: {$responseString}");
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode === 201) {
+                $this->access_token = ArrayHelper::getValue($body, 'access');
+                $this->refresh_token = ArrayHelper::getValue($body, 'refresh');
+                $this->initClient([
+                    'headers' => ['Authorization' => "JWT {$this->access_token}"]
+                ]);
+
+                return true;
+            }
+
+            $responseString = Message::toString($response);
+            throw new ErrorException("Authenticate Error => Response: {$responseString}");
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     * @throws ErrorException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    private function refreshToken()
+    {
+        $response = $this->request('POST', '/api/user/token/refresh/', [
+            'body' => Json::encode([
+                'refresh' => $this->refresh_token
+            ])
+        ]);
+
+        try {
+            $body = Json::decode($response->getBody());
+        } catch (\Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            $responseString = Message::toString($response);
+            throw new ErrorException("JSON Error: {$e->getMessage()} Response: {$responseString}");
+        }
+
+        $statusCode = $response->getStatusCode();
+
+        if ($statusCode === 200) {
+            $this->access_token = ArrayHelper::getValue($body, 'access');
+            $this->refresh_token = ArrayHelper::getValue($body, 'refresh');
+            $this->initClient([
+                'headers' => ['Authorization' => "JWT {$this->access_token}"]
+            ]);
+
+            return true;
+        }
+
+        $responseString = Message::toString($response);
+
+        throw new ErrorException("Authenticate Error => Response: {$responseString}");
+    }
+
+    /**
+     * Init Client
+     * @param array $config
+     * @throws \GuzzleHttp\Exception\InvalidArgumentException
+     */
+    private function initClient($config = [])
+    {
+        $this->client = new Client(ArrayHelper::merge([
+            'verify' => false,
+            'debug' => false,
+            'base_uri' => $this->url,
+            'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+        ], $config));
+    }
+}
