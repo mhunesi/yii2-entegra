@@ -207,6 +207,11 @@ class Product extends Model
         return $this->_variations;
     }
 
+    public function addVariation(array $variant)
+    {
+        $this->_variations[]= new Variant($variant);
+    }
+
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(),[
