@@ -2,6 +2,7 @@
 
 namespace mhunesi\entegra;
 
+use mhunesi\entegra\services\OrderService;
 use mhunesi\entegra\services\ProductService;
 use Yii;
 use yii\helpers\Json;
@@ -63,9 +64,22 @@ class Entegra extends Component
         $this->authenticate();
     }
 
+    /**
+     * @return ProductService
+     */
     public function productService()
     {
         return new ProductService([
+           'client' => $this->client
+        ]);
+    }
+
+    /**
+     * @return OrderService
+     */
+    public function orderService()
+    {
+        return new OrderService([
            'client' => $this->client
         ]);
     }

@@ -6,8 +6,8 @@
  * @copyright Copyright (c) 2021 Polimorf IO
  * @product PhpStorm.
  * @author : Mustafa Hayri ÜNEŞİ <mhunesi@gmail.com>
- * @date: 6/4/21
- * @time: 2:31 PM
+ * @date: 6/14/21
+ * @time: 11:56 AM
  */
 
 namespace mhunesi\entegra\model;
@@ -15,209 +15,70 @@ namespace mhunesi\entegra\model;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
-/**
- * Class Product
- * @package mhunesi\entegra\model
- * @property variants
- */
 class Product extends Model
 {
-    /**
-     * @var integer
-     */
-    public $status;
-
-    /**
-     * @var string
-     */
-    public $group;
-
-    /**
-     * @var string
-     */
+    public $id;
     public $productCode;
-
-    /**
-     * @var string
-     */
-    public $productName;
-
-    /**
-     * @var integer
-     */
-    public $barcode;
-
-    /**
-     * @var integer
-     */
-    public $quantity;
-
-    /**
-     * @var double
-     */
-    public $price1;
-
-    /**
-     * @var double
-     */
-    public $price2;
-
-    /**
-     * @var double
-     */
-    public $price3;
-
-    /**
-     * @var double
-     */
-    public $price4;
-
-    /**
-     * @var double
-     */
-    public $price5;
-
-    /**
-     * @var double
-     */
-    public $price6;
-
-    /**
-     * @var double
-     */
-    public $price7;
-
-    /**
-     * @var double
-     */
-    public $price8;
-
-    /**
-     * @var integer
-     */
-    public $kdv_id;
-
-    /**
-     * @var string
-     */
-    public $currencyType;
-
-    /**
-     * @var string
-     */
+    public $status;
     public $description;
-
-    /**
-     * @var string
-     */
+    public $product_type;
+    public $barcode;
+    public $send_api;
+    public $name;
     public $brand;
-
-    /**
-     * @var array
-     */
-    public $product_pictures;
-
-    /**
-     * @var Variant[]
-     */
-    private $_variations = [];
-
-    /**
-     * @var string
-     */
+    public $group;
+    public $quantity;
+    public $currencyType;
+    public $kdv_id;
+    public $price1WithVAT;
+    public $price2WithVAT;
+    public $price3WithVAT;
+    public $price4WithVAT;
+    public $price5WithVAT;
+    public $price6WithVAT;
+    public $price7WithVAT;
+    public $price8WithVAT;
+    public $n11_priceWithVAT;
+    public $hb_priceWithVAT;
+    public $gg_buyNowPriceWithVAT;
     public $supplier;
+    public $date_change;
+    public $date_add;
+    public $alan1;
+    public $alan2;
+    public $alan3;
+    public $alan4;
+    public $alan5;
+    public $pictures;
 
-    /**
-     * @var string
-     */
-    public $supplier_id;
+    private $_variatios;
 
-    /**
-     * @var double
-     * N11 Fiyat.
-     */
-    public $n11_price;
-
-    /**
-     * @var double
-     * N11 indirimli fiyat.
-     */
-    public $n11_discountValue;
-
-    /**
-     * @var double
-     * N11 Pro fiyat.
-     */
-    public $n11pro_price;
-
-    /**
-     * @var double
-     * N11 Pro indirimli fiyat.
-     */
-    public $n11pro_discountValue;
-
-    /**
-     * @var double
-     * Amazon Fiyat.
-     */
-    public $amazon_price;
-
-    /**
-     * @var double
-     * Amazon indirimli fiyat.
-     */
-    public $amazon_salePrice;
-
-    /**
-     * @var double
-     * Trendyol fiyat.
-     */
-    public $trendyol_listPrice;
-
-    /**
-     * @var double
-     * Trendyol indirimli fiyat.
-     */
-    public $trendyol_salePrice;
-
-    /**
-     * @inheritDoc
-     */
-    public function rules()
+    public function setVariatios(array $variants)
     {
-        return [
-            [['status','quantity','group','productCode','barcode','price1','kdv_id','currencyType','description','product_pictures','brand','variations','supplier','supplier_id'],'required'],
-            [['currencyType'],'in','range' => ['TRL','USD','EUR','CHF','SFR','IRR','RUB','GBP','JPY']],
-            [['kdv_id'],'in', 'range' => [0,8,10,18]],
-        ];
-    }
-
-
-    public function setVariations(array $variants)
-    {
-        $this->_variations = [];
+        $this->_variatios = [];
 
         foreach ($variants as $variant) {
-            $this->_variations[]= new Variant($variant);
+            $this->_variatios[]= new Variant($variant);
         }
     }
 
-    public function getVariations()
+    public function getVariatios()
     {
-        return $this->_variations;
+        return $this->_variatios;
     }
 
     public function addVariation(array $variant)
     {
-        $this->_variations[]= new Variant($variant);
+        $this->_variatios[]= new Variant($variant);
     }
 
     public function fields()
     {
         return ArrayHelper::merge(parent::fields(),[
-            'variations' => function () {
-                return $this->getVariations();
+            'variatios' => function () {
+                return $this->getVariatios();
             },
         ]);
     }
+
 }

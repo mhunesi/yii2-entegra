@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
 
 class Variant extends Model
 {
+    public $id;
     /**
      * @var integer
      */
@@ -27,6 +28,11 @@ class Variant extends Model
      * @var string
      */
     public $productCode;
+
+    /**
+     * @var string
+     */
+    public $mainProductCode;
 
     /**
      * @var integer
@@ -67,6 +73,26 @@ class Variant extends Model
      * @var int
      */
     public $weight_prefix = 0;
+
+    public $n11_price;
+
+    public $hb_st_sku;
+
+    public $gg_price;
+
+    public $hb_price; //String
+    public $trendy_price; //String
+    public $modanisa_price; //String
+    public $eticaret_price; //String
+    public $n11pro_price; //String
+    public $sp_price; //String
+    public $eptt_price; //String
+    public $amazon_price; //String
+    public $hb_sku; //String
+    public $morhipo_price; //String
+    public $itemdim1code; //String
+    public $itemdim2code; //String
+    public $variationSpec; //String
 
     /**
      * @var VariationSpecs[]
