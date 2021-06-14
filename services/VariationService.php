@@ -13,6 +13,7 @@
 namespace mhunesi\entegra\services;
 
 
+use mhunesi\entegra\helpers\ArrayHelper;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
@@ -28,7 +29,7 @@ class VariationService extends BaseObject
         $endPoint = "/variations/";
 
         $response = $this->client->request('PUT',$endPoint,[
-            'body' => Json::encode(['list' => [array_filter($variant->toArray())]])
+            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($variant->toArray())]])
         ]);
 
         return Json::decode($response->getBody());
@@ -40,7 +41,7 @@ class VariationService extends BaseObject
         $endPoint = "/variations/";
 
         $response = $this->client->request('POST',$endPoint,[
-            'body' => Json::encode(['list' => [array_filter($variant->toArray())]])
+            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($variant->toArray())]])
         ]);
 
         return Json::decode($response->getBody());

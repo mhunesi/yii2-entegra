@@ -13,13 +13,12 @@
 namespace mhunesi\entegra\services;
 
 
-use GuzzleHttp\Client;
-use mhunesi\entegra\model\CreateOrder;
-use mhunesi\entegra\model\Order;
-use mhunesi\entegra\model\Variant;
-use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use GuzzleHttp\Client;
+use yii\base\BaseObject;
+use mhunesi\entegra\model\Order;
+use mhunesi\entegra\model\CreateOrder;
+use mhunesi\entegra\helpers\ArrayHelper;
 
 class OrderService extends BaseObject
 {
@@ -31,7 +30,7 @@ class OrderService extends BaseObject
         $endPoint = "/order/";
 
         $response = $this->client->request('POST',$endPoint,[
-            'body' => Json::encode(['list' => [array_filter($createOrder->toArray())]])
+            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($createOrder->toArray())]])
         ]);
 
         return Json::decode($response->getBody());

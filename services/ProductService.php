@@ -12,13 +12,12 @@
 
 namespace mhunesi\entegra\services;
 
-use mhunesi\entegra\model\CreateProduct;
-use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
 use mhunesi\entegra\model\Product;
+use mhunesi\entegra\model\CreateProduct;
+use mhunesi\entegra\helpers\ArrayHelper;
 
 class ProductService extends BaseObject
 {
@@ -53,7 +52,7 @@ class ProductService extends BaseObject
         $endPoint = "/product/";
 
         $response = $this->client->request('POST',$endPoint,[
-            'body' => Json::encode(['list' => [\mhunesi\entegra\helpers\ArrayHelper::ArrayFilterRecursive($product->toArray())]])
+            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($product->toArray())]])
         ]);
 
         return Json::decode($response->getBody());
@@ -65,7 +64,7 @@ class ProductService extends BaseObject
         $endPoint = "/product/";
 
         $response = $this->client->request('PUT',$endPoint,[
-            'body' => Json::encode(['list' => [array_filter($product->toArray())]])
+            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($product->toArray())]])
         ]);
 
         return Json::decode($response->getBody());
