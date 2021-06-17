@@ -12,6 +12,7 @@
 
 namespace mhunesi\entegra\services;
 
+use mhunesi\entegra\model\UpdateProduct;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
@@ -59,7 +60,7 @@ class ProductService extends BaseObject
     }
 
 
-    public function update(CreateProduct $product)
+    public function update(UpdateProduct $product)
     {
         $endPoint = "/product/";
 
