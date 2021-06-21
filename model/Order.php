@@ -119,6 +119,11 @@ class Order extends Model
     public $date_add;
     public $date_change;
     public $is_fulfillment;
+    public $platform_reference_no;
+    public $is_partial;
+    public $grand_total_desi;
+    public $cargo_packet_type;
+    public $einvoice_error_message;
 
 
     /**

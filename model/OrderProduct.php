@@ -66,4 +66,7 @@ class OrderProduct extends Model
     public $first_price; 
     public $is_fulfillment; 
     public $variation_values;
+    public $platform_reference_no;
+    public $total_desi;
+    public $total_cargo_packet_amount;
 }
