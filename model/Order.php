@@ -124,6 +124,10 @@ class Order extends Model
     public $grand_total_desi;
     public $cargo_packet_type;
     public $einvoice_error_message;
+    public $hb_discount_invoice;
+    public $mut_odeme;
+    public $mut_kargo;
+    public $mut_iptal;
 
 
     /**

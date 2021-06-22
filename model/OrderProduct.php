@@ -69,4 +69,5 @@ class OrderProduct extends Model
     public $platform_reference_no;
     public $total_desi;
     public $total_cargo_packet_amount;
+    public $buying_price;
 }
