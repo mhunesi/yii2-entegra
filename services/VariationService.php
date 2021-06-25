@@ -24,27 +24,42 @@ class VariationService extends BaseObject
     /** @var Client */
     public $client;
 
-    public function update(Variant $variant)
+    /**
+     * @param Variant[] $variants
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function update(array $variants)
     {
         $endPoint = "/variations/";
 
+        foreach ($variants as $k => $variant) {
+            $variants[$k] = ArrayHelper::ArrayFilterRecursive($variant->toArray());
+        }
+
         $response = $this->client->request('PUT',$endPoint,[
-            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($variant->toArray())]])
+            'body' => Json::encode(['list' => $variants])
         ]);
 
         return Json::decode($response->getBody());
     }
 
-
-    public function create(Variant $variant)
+    /**
+     * @param Variant[] $variants
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function create(array $variants)
     {
         $endPoint = "/variations/";
 
-        $response = $this->client->request('POST',$endPoint,[
-            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($variant->toArray())]])
-        ]);
+        foreach ($variants as $k => $variant) {
+            $variants[$k] = ArrayHelper::ArrayFilterRecursive($variant->toArray());
+        }
 
-        return Json::decode($response->getBody());
+        return $this->client->request('POST',$endPoint,[
+            'body' => Json::encode(['list' => $variants])
+        ]);
     }
 
 }

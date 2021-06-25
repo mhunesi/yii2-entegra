@@ -29,11 +29,9 @@ class OrderService extends BaseObject
     {
         $endPoint = "/order/";
 
-        $response = $this->client->request('POST',$endPoint,[
+        return $this->client->request('POST',$endPoint,[
             'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($createOrder->toArray())]])
         ]);
-
-        return Json::decode($response->getBody());
     }
 
 

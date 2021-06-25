@@ -48,27 +48,41 @@ class ProductService extends BaseObject
     }
 
 
-    public function create(CreateProduct $product)
+    /**
+     * @param CreateProduct[] $products
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function create(array $products)
     {
+        foreach ($products as $k => $product) {
+            $products[$k] = ArrayHelper::ArrayFilterRecursive($product->toArray());
+        }
+
         $endPoint = "/product/";
 
-        $response = $this->client->request('POST',$endPoint,[
-            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($product->toArray())]])
+        return $this->client->request('POST',$endPoint,[
+            'body' => Json::encode(['list' => $products])
         ]);
-
-        return Json::decode($response->getBody());
     }
 
 
-    public function update(UpdateProduct $product)
+    /**
+     * @param UpdateProduct[] $products
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function update(array $products)
     {
+        foreach ($products as $k => $product) {
+            $products[$k] = ArrayHelper::ArrayFilterRecursive($product->toArray());
+        }
+
         $endPoint = "/product/";
 
-        $response = $this->client->request('PUT',$endPoint,[
-            'body' => Json::encode(['list' => [ArrayHelper::ArrayFilterRecursive($product->toArray())]])
+        return $this->client->request('PUT',$endPoint,[
+            'body' => Json::encode(['list' => $products])
         ]);
-
-        return Json::decode($response->getBody());
     }
 
 }
