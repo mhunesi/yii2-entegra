@@ -13,12 +13,14 @@
 namespace mhunesi\entegra\services;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
 use mhunesi\entegra\model\Order;
 use mhunesi\entegra\model\CreateOrder;
 use mhunesi\entegra\helpers\ArrayHelper;
+use Yii;
 
 class OrderService extends BaseObject
 {
@@ -41,9 +43,14 @@ class OrderService extends BaseObject
 
         $endPoint = "/order/page={$page}/";
 
-        $response = $this->client->request('GET',$endPoint,[
-            'query' => ['start_date' => $start_date,'end_date' => $end_date]
-        ]);
+        try{
+            $response = $this->client->request('GET',$endPoint,[
+                'query' => ['start_date' => $start_date,'end_date' => $end_date]
+            ]);
+        }catch (GuzzleException $e){
+            $response = $e->getResponse();
+            Yii::error($response->getBody(),__METHOD__);
+        }
 
         $orderResponse = ArrayHelper::getValue(Json::decode($response->getBody()),'orders');
 
