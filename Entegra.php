@@ -148,18 +148,20 @@ class Entegra extends Component
                 Yii::$app->cache->set("{$this->cacheKPrefix}_access_token",$this->access_token,3600 * 24 * 90);
                 Yii::$app->cache->set("{$this->cacheKPrefix}_refresh_token",$this->refresh_token,3600 * 24 * 90);
 
-                $this->initClient([
-                    'headers' => [
-                        'Authorization' => "JWT {$this->access_token}",
-                    ]
-                ]);
+            }else
+            {   
+                    
+                $responseString = Message::toString($response);
+                throw new ErrorException("Authenticate Error => Response: {$responseString}");
 
-                return true;
             }
 
-            $responseString = Message::toString($response);
-            throw new ErrorException("Authenticate Error => Response: {$responseString}");
         }
+        $this->initClient([
+            'headers' => [
+                'Authorization' => "JWT {$this->access_token}",
+            ]
+        ]);
 
         return true;
     }
