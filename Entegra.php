@@ -65,12 +65,11 @@ class Entegra extends Component
      */
     public function init()
     {
-        $this->initClient();
-
+        
         $this->access_token = Yii::$app->cache->get("{$this->cacheKPrefix}_access_token");
-
         $this->refresh_token = Yii::$app->cache->get("{$this->cacheKPrefix}_refresh_token");
 
+        $this->initClient();
         $this->authenticate();
     }
 
@@ -152,7 +151,6 @@ class Entegra extends Component
                 $this->initClient([
                     'headers' => [
                         'Authorization' => "JWT {$this->access_token}",
-                        'User-Agent' => 'PostmanRuntime/7.26.8'
                     ]
                 ]);
 
@@ -215,7 +213,11 @@ class Entegra extends Component
             'verify' => false,
             'debug' => false,
             'base_uri' => $this->url,
-            'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'User-Agent'=>'PostmanRuntime/7.26.8'
+            ],
         ], $config));
     }
 }
