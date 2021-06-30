@@ -54,6 +54,11 @@ class Entegra extends Component
     public $cache = 'cache';
 
     /**
+     * @var string
+     */
+    public $cacheKPrefix = 'entegra';
+
+    /**
      * @throws ErrorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \GuzzleHttp\Exception\InvalidArgumentException
@@ -61,6 +66,11 @@ class Entegra extends Component
     public function init()
     {
         $this->initClient();
+
+        $this->access_token = Yii::$app->cache->get("{$this->cacheKPrefix}_access_token");
+
+        $this->refresh_token = Yii::$app->cache->get("{$this->cacheKPrefix}_refresh_token");
+
         $this->authenticate();
     }
 
@@ -135,8 +145,15 @@ class Entegra extends Component
             if ($statusCode === 201) {
                 $this->access_token = ArrayHelper::getValue($body, 'access');
                 $this->refresh_token = ArrayHelper::getValue($body, 'refresh');
+
+                Yii::$app->cache->set("{$this->cacheKPrefix}_access_token",$this->access_token,3600 * 24 * 90);
+                Yii::$app->cache->set("{$this->cacheKPrefix}_refresh_token",$this->refresh_token,3600 * 24 * 90);
+
                 $this->initClient([
-                    'headers' => ['Authorization' => "JWT {$this->access_token}"]
+                    'headers' => [
+                        'Authorization' => "JWT {$this->access_token}",
+                        'User-Agent' => 'PostmanRuntime/7.26.8'
+                    ]
                 ]);
 
                 return true;
