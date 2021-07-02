@@ -70,4 +70,7 @@ class OrderProduct extends Model
     public $total_desi;
     public $total_cargo_packet_amount;
     public $buying_price;
+    public $scanned;
+    public $total_product;
+
 }
