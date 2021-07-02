@@ -128,6 +128,9 @@ class Order extends Model
     public $mut_odeme;
     public $mut_kargo;
     public $mut_iptal;
+    public $total_product;
+    public $total_product_quantity;
+    public $mut_hizmet;
 
 
     /**

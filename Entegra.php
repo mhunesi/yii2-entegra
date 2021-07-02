@@ -145,8 +145,8 @@ class Entegra extends Component
                 $this->access_token = ArrayHelper::getValue($body, 'access');
                 $this->refresh_token = ArrayHelper::getValue($body, 'refresh');
 
-                Yii::$app->cache->set("{$this->cacheKPrefix}_access_token",$this->access_token,3600 * 24 * 90);
-                Yii::$app->cache->set("{$this->cacheKPrefix}_refresh_token",$this->refresh_token,3600 * 24 * 90);
+                Yii::$app->cache->set("{$this->cacheKPrefix}_access_token",$this->access_token,3600 * 24 * 30);
+                Yii::$app->cache->set("{$this->cacheKPrefix}_refresh_token",$this->refresh_token,3600 * 24 * 30);
 
             }else
             {   
