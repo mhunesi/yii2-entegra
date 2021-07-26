@@ -131,6 +131,8 @@ class Order extends Model
     public $total_product;
     public $total_product_quantity;
     public $mut_hizmet;
+    public $delivered_person_name;
+    public $delivered_date;
 
 
     /**
