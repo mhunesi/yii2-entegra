@@ -31,11 +31,7 @@ class VariationService extends BaseObject
      */
     public function update(array $variants)
     {
-        $endPoint = "/variations/";
-
-        foreach ($variants as $k => $variant) {
-            $variants[$k] = ArrayHelper::ArrayFilterRecursive($variant->toArray());
-        }
+        $endPoint = "/product/variations/";
 
         $response = $this->client->request('PUT',$endPoint,[
             'body' => Json::encode(['list' => $variants])
