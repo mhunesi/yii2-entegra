@@ -33,11 +33,9 @@ class VariationService extends BaseObject
     {
         $endPoint = "/product/variations/";
 
-        $response = $this->client->request('PUT',$endPoint,[
+        return $this->client->request('PUT',$endPoint,[
             'body' => Json::encode(['list' => $variants])
         ]);
-
-        return Json::decode($response->getBody());
     }
 
     /**
