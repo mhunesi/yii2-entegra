@@ -39,17 +39,13 @@ class VariationService extends BaseObject
     }
 
     /**
-     * @param Variant[] $variants
+     * @param array $variants
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(array $variants)
     {
         $endPoint = "/variations/";
-
-        foreach ($variants as $k => $variant) {
-            $variants[$k] = ArrayHelper::ArrayFilterRecursive($variant->toArray());
-        }
 
         return $this->client->request('POST',$endPoint,[
             'body' => Json::encode(['list' => $variants])
