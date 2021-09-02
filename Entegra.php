@@ -4,6 +4,7 @@ namespace mhunesi\entegra;
 
 use mhunesi\entegra\services\OrderService;
 use mhunesi\entegra\services\ProductService;
+use mhunesi\entegra\services\VariationService;
 use Yii;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
@@ -89,6 +90,16 @@ class Entegra extends Component
     public function orderService()
     {
         return new OrderService([
+           'client' => $this->client
+        ]);
+    }
+
+    /**
+     * @return VariationService
+     */
+    public function variantService()
+    {
+        return new VariationService([
            'client' => $this->client
         ]);
     }
