@@ -45,7 +45,7 @@ class VariationService extends BaseObject
      */
     public function create(array $variants)
     {
-        $endPoint = "/variations/";
+        $endPoint = "/product/variations/";
 
         return $this->client->request('POST',$endPoint,[
             'body' => Json::encode(['list' => $variants])
