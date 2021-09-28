@@ -102,6 +102,26 @@ class OrderService extends BaseObject
     }
 
     /**
+     * @param array $updateOrders
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
+    public function updateERPMultible(array $updateOrders)
+    {
+        $endPoint = "/order/update";
+
+        $requestData = [];
+
+        foreach ($updateOrders as $updateOrder) {
+            $requestData[] = array_filter($updateOrder->toArray());
+        }
+
+        return $this->client->request('PUT',$endPoint,[
+            'body' => Json::encode(['list' => $requestData])
+        ]);
+    }
+
+    /**
      * @param UpdateOrder $updateOrder
      * @return \Psr\Http\Message\ResponseInterface
      * @throws GuzzleException
@@ -109,6 +129,20 @@ class OrderService extends BaseObject
     public function update(UpdateOrder $updateOrder)
     {
         $endPoint = "/order/";
+
+        return $this->client->request('PUT',$endPoint,[
+            'body' => Json::encode(['list' => [array_filter($updateOrder->toArray())]])
+        ]);
+    }
+
+    /**
+     * @param UpdateOrder $updateOrder
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
+    public function updateERP(UpdateOrder $updateOrder)
+    {
+        $endPoint = "/order/update";
 
         return $this->client->request('PUT',$endPoint,[
             'body' => Json::encode(['list' => [array_filter($updateOrder->toArray())]])

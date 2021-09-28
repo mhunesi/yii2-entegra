@@ -24,13 +24,13 @@ to the require section of your `composer.json` file.
 
 Usage
 -----
-
+Postman Collection: https://documenter.getpostman.com/view/11428707/TVRha8xQ
+ 
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?php
-    /** @var $entegra Entegra */
-    $entegra = Yii::$app->entegra;
+/** @var $entegra Entegra */
+$entegra = Yii::$app->entegra;
     
-    $response = $entegra->productService()->all();
- ?>```
+$response = $entegra->productService()->all();
+```
