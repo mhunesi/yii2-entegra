@@ -23,6 +23,10 @@ use mhunesi\entegra\model\UpdateOrder;
 use mhunesi\entegra\helpers\ArrayHelper;
 use GuzzleHttp\Exception\GuzzleException;
 
+/**
+ * Class OrderService
+ * @package mhunesi\entegra\services
+ */
 class OrderService extends BaseObject
 {
     /** @var Client */
@@ -46,18 +50,22 @@ class OrderService extends BaseObject
      * @param int $page
      * @param null $start_date
      * @param null $end_date
+     * @param null $status
+     * @param null $sync
      * @return array
      * @throws \Exception
      */
-    public function all($page=1,$start_date = null,$end_date = null)
+    public function all($page=1,$start_date = null,$end_date = null,$status = null,$sync = null)
     {
         $orders = [];
 
         $endPoint = "/order/page={$page}/";
 
+        $query = ['start_date' => $start_date,'end_date' => $end_date,'status' => $status,'sync' => $sync];
+
         try{
             $response = $this->client->request('GET',$endPoint,[
-                'query' => ['start_date' => $start_date,'end_date' => $end_date]
+                'query' => $query
             ]);
         }catch (GuzzleException $e){
             $response = $e->getResponse();
@@ -106,6 +114,4 @@ class OrderService extends BaseObject
             'body' => Json::encode(['list' => [array_filter($updateOrder->toArray())]])
         ]);
     }
-
-
 }

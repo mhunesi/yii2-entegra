@@ -14,15 +14,34 @@ namespace mhunesi\entegra\model;
 
 use yii\base\Model;
 
+/**
+ * Class UpdateOrder
+ * @package mhunesi\entegra\model
+ */
 class UpdateOrder extends Model
 {
+    /**
+     * @var int
+     */
     public $id;
 
+    /**
+     * @var int
+     */
     public $sync;
 
+    /**
+     * @var int
+     */
     public $status;
 
+    /**
+     * @var string
+     */
     public $cargo_code2;
 
+    /**
+     * @var string
+     */
     public $cargo_follow_url;
 }
