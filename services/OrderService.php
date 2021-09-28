@@ -13,20 +13,26 @@
 namespace mhunesi\entegra\services;
 
 
-use GuzzleHttp\Exception\GuzzleException;
+use Yii;
 use yii\helpers\Json;
 use GuzzleHttp\Client;
 use yii\base\BaseObject;
 use mhunesi\entegra\model\Order;
 use mhunesi\entegra\model\CreateOrder;
+use mhunesi\entegra\model\UpdateOrder;
 use mhunesi\entegra\helpers\ArrayHelper;
-use Yii;
+use GuzzleHttp\Exception\GuzzleException;
 
 class OrderService extends BaseObject
 {
     /** @var Client */
     public $client;
 
+    /**
+     * @param CreateOrder $createOrder
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
     public function create(CreateOrder $createOrder)
     {
         $endPoint = "/order/";
@@ -36,7 +42,13 @@ class OrderService extends BaseObject
         ]);
     }
 
-
+    /**
+     * @param int $page
+     * @param null $start_date
+     * @param null $end_date
+     * @return array
+     * @throws \Exception
+     */
     public function all($page=1,$start_date = null,$end_date = null)
     {
         $orders = [];
@@ -59,6 +71,40 @@ class OrderService extends BaseObject
         }
 
         return $orders;
+    }
+
+    /**
+     * @param array $updateOrders
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
+    public function updateMultible(array $updateOrders)
+    {
+        $endPoint = "/order/";
+
+        $requestData = [];
+
+        foreach ($updateOrders as $updateOrder) {
+            $requestData[] = array_filter($updateOrder->toArray());
+        }
+
+        return $this->client->request('PUT',$endPoint,[
+            'body' => Json::encode(['list' => $requestData])
+        ]);
+    }
+
+    /**
+     * @param UpdateOrder $updateOrder
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws GuzzleException
+     */
+    public function update(UpdateOrder $updateOrder)
+    {
+        $endPoint = "/order/";
+
+        return $this->client->request('PUT',$endPoint,[
+            'body' => Json::encode(['list' => [array_filter($updateOrder->toArray())]])
+        ]);
     }
 
 
