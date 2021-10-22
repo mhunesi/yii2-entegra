@@ -72,5 +72,5 @@ class OrderProduct extends Model
     public $buying_price;
     public $scanned;
     public $total_product;
-
+    public $manual_scanned;
 }
