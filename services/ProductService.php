@@ -27,7 +27,7 @@ class ProductService extends BaseObject
 
     /**
      * @param int $page
-     * @return Product[]
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function all($page=1)
@@ -38,13 +38,7 @@ class ProductService extends BaseObject
 
         $response = $this->client->request('GET',$endPoint);
 
-        $productResponse = ArrayHelper::getValue(Json::decode($response->getBody()),'porductList');
-
-        foreach ($productResponse as $item) {
-            $products[] = new Product($item);
-        }
-
-        return $products;
+        return ArrayHelper::getValue(Json::decode($response->getBody()),'porductList');
     }
 
 
