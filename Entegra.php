@@ -22,7 +22,7 @@ class Entegra extends Component
     /**
      * @var string
      */
-    public $url = "https://api.entegrabilisim.com";
+    public $url = "https://apiv2.entegrabilisim.com";
 
     /**
      * @var string
