@@ -57,7 +57,7 @@ class Entegra extends Component
     /**
      * @var string
      */
-    public $cacheKPrefix = 'entegra';
+    public $cacheKPrefix = 'entegraV2';
 
     /**
      * @throws ErrorException
