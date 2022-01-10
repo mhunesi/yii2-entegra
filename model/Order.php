@@ -133,6 +133,7 @@ class Order extends Model
     public $mut_hizmet;
     public $delivered_person_name;
     public $delivered_date;
+    public $shop_id;
 
 
     /**
