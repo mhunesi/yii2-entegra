@@ -135,6 +135,7 @@ class Order extends Model
     public $delivered_date;
     public $shop_id;
     public $store_id;
+    public $preparation_time;
 
 
     /**
