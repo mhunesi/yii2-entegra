@@ -75,4 +75,5 @@ class OrderProduct extends Model
     public $manual_scanned;
     public $shop_id;
     public $store_id;
+    public $who_scanned;
 }
