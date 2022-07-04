@@ -138,6 +138,7 @@ class Order extends Model
     public $preparation_time;
     public $preparation_state_sync;
     public $efatura_sync;
+    public $platform_serial_sync;
 
 
     /**
