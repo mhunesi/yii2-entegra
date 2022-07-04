@@ -137,6 +137,7 @@ class Order extends Model
     public $store_id;
     public $preparation_time;
     public $preparation_state_sync;
+    public $efatura_sync;
 
 
     /**
